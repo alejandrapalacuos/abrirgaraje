@@ -18,8 +18,6 @@ def on_message(client, userdata, message):
     message_received=str(message.payload.decode("utf-8"))
     st.write(message_received)
 
-st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
-
 broker="157.230.214.127"
 port=1883
 client1= paho.Client("APP_CERR")
@@ -61,3 +59,5 @@ if img_file_buffer is not None:
       st.header('Acceso denegado')
       client1.publish("vocecita","{'Act1': 'Cierra la puerta'}",qos=0, retain=False)
       time.sleep(0.2)  
+        
+st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
