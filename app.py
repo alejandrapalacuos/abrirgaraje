@@ -62,5 +62,7 @@ if img_file_buffer is not None:
       st.header('Acceso denegado')
       client1.publish("vocecita","{'Act1': 'Cierra la puerta'}",qos=0, retain=False)
       time.sleep(0.2)  
+s
+
 
 st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
