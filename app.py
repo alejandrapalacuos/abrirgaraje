@@ -1,3 +1,6 @@
+import paho.mqtt.client as paho
+import time
+import json
 import streamlit as st
 import cv2
 import numpy as np
@@ -5,17 +8,32 @@ import numpy as np
 from PIL import Image as Image, ImageOps as ImagOps
 from keras.models import load_model
 
-import platform
+def on_publish(client,userdata,result):             #create function for callback
+    print("el dato ha sido publicado \n")
+    pass
 
-# Muestra la versión de Python junto con detalles adicionales
-st.write("Versión de Python:", platform.python_version())
+def on_message(client, userdata, message):
+    global message_received
+    time.sleep(2)
+    message_received=str(message.payload.decode("utf-8"))
+    st.write(message_received)
+
+        
+
+
+broker="157.230.214.127"
+port=1883
+client1= paho.Client("APP_CERR")
+client1.on_message = on_message
+client1.on_publish = on_publish
+client1.connect(broker,port)
 
 model = load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-st.title("Abre el garaje!")
-#st.write("Versión de Python:", platform.python_version())
-img_file_buffer = st.camera_input("Toma una foto ;)")
+st.title("Cerradura Inteligente")
+
+img_file_buffer = st.camera_input("Toma una Foto")
 
 if img_file_buffer is not None:
     # To read image file buffer with OpenCV:
@@ -36,12 +54,11 @@ if img_file_buffer is not None:
     # run the inference
     prediction = model.predict(data)
     print(prediction)
-    if prediction[0][0]>0.5:
-      st.header('Abierto')
-    if prediction[0][1]>0.5:
-      st.header('Acceso Denegado')
-    #if prediction[0][2]>0.5:
-    # st.header('Derecha, con Probabilidad: '+str( prediction[0][2]))
-
-st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
-
+    if prediction[0][0]>0.3:
+      st.header('Abriendo')
+      client1.publish("vocecita","{'Act1': 'abre la puerta'}",qos=0, retain=False)
+      time.sleep(0.2)
+    if prediction[0][1]>0.3:
+      st.header('Acceso denegado')
+      client1.publish("vocecita","{'Act1': 'Cierra la puerta'}",qos=0, retain=False)
+      time.sleep(0.2)  
