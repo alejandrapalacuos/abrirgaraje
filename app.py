@@ -13,7 +13,6 @@ st.write("Versión de Python:", platform.python_version())
 model = load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-st.title("Abre el garaje!")
 #st.write("Versión de Python:", platform.python_version())
 img_file_buffer = st.camera_input("Toma una foto ;)")
 
