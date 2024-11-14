@@ -30,7 +30,7 @@ data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 st.title("Cerradura Inteligente")
 
-st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
+
 
 img_file_buffer = st.camera_input("Toma una Foto")
 
@@ -62,4 +62,4 @@ if img_file_buffer is not None:
       client1.publish("vocecita","{'Act1': 'Cierra la puerta'}",qos=0, retain=False)
       time.sleep(0.2)  
         
-
+st.link_button("Volver a inicio", "https://finalinterfaces-fnfqrnjj9eidx5gwyv9uul.streamlit.app/")
